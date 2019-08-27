@@ -32,9 +32,12 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
-	- name: "Create a Volume"
+    - name: "Create a Volume"
       docker_volume:
         name: "{{ docker_volume }}"
+    - name: "Create a network"
+      docker_network:
+        name: "{{ docker_network }}"
     - name: "Launch database container"
       docker_container:
         name: "{{ db_name }}"
@@ -42,6 +45,10 @@
         volumes:
           - "{{ docker_volume }}:/var/lib/mysql:rw"
         restart: true
+	networks:
+          - name: "{{ docker_network }}"
+            alias:
+              - "{{ db_name }}"
         env:
           MYSQL_ROOT_PASSWORD: wordpress
           MYSQL_DATABASE: wordpress
