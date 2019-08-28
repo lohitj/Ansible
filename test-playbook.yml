@@ -61,3 +61,7 @@
         ports:
           - "{{ wp_host_port }}:{{ wp_container_port }}"
         restart: true
+        networks:
+          - name: "{{ docker_network }}"
+            alias:
+              - "{{ db_name }}"
