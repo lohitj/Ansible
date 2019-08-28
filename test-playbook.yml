@@ -47,8 +47,6 @@
         restart: true
         networks:
           - name: "{{ docker_network }}"
-            alias:
-              - "{{ db_name }}"
         env:
           MYSQL_ROOT_PASSWORD: wordpress
           MYSQL_DATABASE: wordpress
@@ -63,5 +61,3 @@
         restart: true
         networks:
           - name: "{{ docker_network }}"
-            alias:
-              - "{{ db_name }}"
