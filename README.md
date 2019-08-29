@@ -1,4 +1,4 @@
 # Ansible
-git clone 
-cd Ansible
+git clone \n 
+cd Ansible \n
 sudo ./deploy.sh
