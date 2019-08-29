@@ -6,7 +6,4 @@ if [ ! -d "$DIRECTORY" ]; then
         sudo apt install ansible
 	sudo apt install python
 fi
-cd ~
-git clone https://github.com/lohitj/Ansible.git
-cd Ansible
 ansible-playbook test-playbook.yml
