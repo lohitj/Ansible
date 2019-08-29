@@ -3,8 +3,8 @@
   vars:
     docker_volume: db_data
     docker_network: ansible_net
-    db_name: localhost
-    mp_name: wordpress
+    db_name: db
+    mp_name: mediawiki
     mp_host_port: 8000
     mp_container_port: 80
 
