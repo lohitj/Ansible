@@ -3,5 +3,5 @@ PREQUISITES:                                                                    
 Please run the commands below.
 1.git clone 
 2.cd Ansible 
-3.sudo ./deploy.sh
+Run the ./deploy.sh
 
