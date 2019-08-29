@@ -3,10 +3,10 @@
   vars:
     docker_volume: db_data
     docker_network: ansible_net
-    db_name: db
-    wp_name: wordpress
-    wp_host_port: 8000
-    wp_container_port: 80
+    db_name: localhost
+    mp_name: wordpress
+    mp_host_port: 8000
+    mp_container_port: 80
 
   tasks:
     - name: Install aptitude using apt
@@ -48,16 +48,16 @@
         networks:
           - name: "{{ docker_network }}"
         env:
-          MYSQL_ROOT_PASSWORD: wordpress
-          MYSQL_DATABASE: wordpress
-          MYSQL_USER: wordpress
-          MYSQL_PASSWORD: wordpress
-    - name: "Launch wordpress container"
+          MYSQL_ROOT_PASSWORD: mediawiki
+          MYSQL_DATABASE: mediawiki
+          MYSQL_USER: mediawiki
+          MYSQL_PASSWORD: mediawiki
+    - name: "Launch Mediawiki container"
       docker_container:
-        name: "{{ wp_name }}"
+        name: "{{ mp_name }}"
         image: mediawiki:latest
         ports:
-          - "{{ wp_host_port }}:{{ wp_container_port }}"
+          - "{{ mp_host_port }}:{{ mp_container_port }}"
         restart: true
         networks:
           - name: "{{ docker_network }}"
