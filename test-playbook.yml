@@ -2,12 +2,11 @@
   gather_facts: no
   vars:
     docker_volume: db_data
-    docker_network: ansible_net
+    docker_network: wordpress_net
     db_name: db
-    mp_name: mediawiki
-    mp_host_port: 8000
-    mp_container_port: 80
-
+    wp_name: wordpress
+    wp_host_port: "{{ lookup('env','WORDPRESS_PORT') | default(8080)}}"
+    wp_container_port: 80
   tasks:
     - name: Install aptitude using apt
       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
@@ -35,29 +34,33 @@
     - name: "Create a Volume"
       docker_volume:
         name: "{{ docker_volume }}"
+
     - name: "Create a network"
       docker_network:
         name: "{{ docker_network }}"
+
     - name: "Launch database container"
       docker_container:
         name: "{{ db_name }}"
         image: mysql:5.7
         volumes:
           - "{{ docker_volume }}:/var/lib/mysql:rw"
-        restart: true
-        networks:
-          - name: "{{ docker_network }}"
+        restart_policy: always
+        network_mode: "{{ docker_network }}"
         env:
-          MYSQL_ROOT_PASSWORD: mediawiki
-          MYSQL_DATABASE: mediawiki
-          MYSQL_USER: mediawiki
-          MYSQL_PASSWORD: mediawiki
-    - name: "Launch Mediawiki container"
+          MYSQL_ROOT_PASSWORD: wordpress
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: wordpress
+
+    - name: "Launch wordpress container"
       docker_container:
-        name: "{{ mp_name }}"
-        image: mediawiki:latest
+        name: "{{ wp_name }}"
+        image: wordpress:latest
         ports:
-          - "{{ mp_host_port }}:{{ mp_container_port }}"
-        restart: true
-        networks:
-          - name: "{{ docker_network }}"
+          - "{{ wp_host_port }}:{{ wp_container_port }}"
+        restart_policy: always
+        network_mode: "{{ docker_network }}"
+        env:
+          WORDPRESS_DB_HOST: "{{ db_name }}:3306"
+          WORDPRESS_DB_PASSWORD: wordpress
